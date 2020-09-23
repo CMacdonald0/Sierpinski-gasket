@@ -1,12 +1,13 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-const int WH = 800;
+const int WH = 1024;
 SDL_Window* gWindow = nullptr;
 SDL_Renderer* gRenderer = nullptr;
 
 bool init();
 void close();
+void drawGasket(int x, int y, int size);
 
 // Initialize SDL and create a window and renderer
 bool init()
@@ -48,6 +49,24 @@ void close()
     SDL_Quit();
 }
 
+// Draws a gasket if the input size is small enough. Otherwises halves the size
+void drawGasket(int x, int y, int size)
+{
+    if (size <= 16)
+    {
+        SDL_Rect fillSpace = {x, y, size, size};
+        SDL_RenderFillRect(gRenderer, &fillSpace);
+    }
+    else
+    {
+        size = size / 2;
+        drawGasket(x + size, y, size);
+        drawGasket(x, y + size, size);
+        drawGasket(x + size, y + size, size);
+    }
+    
+}
+
 int main(int argc, char* args[])
 {
     if (!init())
@@ -75,6 +94,9 @@ int main(int argc, char* args[])
         // Clear the window before renderering
         SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
         SDL_RenderClear(gRenderer);
+
+        SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
+        drawGasket(0, 0, WH);
 
         // Update at the end of every frame
         SDL_RenderPresent(gRenderer);
