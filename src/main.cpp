@@ -1,12 +1,16 @@
 #include <iostream>
+#include <cstdint>
 #include <SDL2/SDL.h>
 
 const int WH = 1024;
+const float colorIntensity = 255.f / WH;
+
 SDL_Window* gWindow = nullptr;
 SDL_Renderer* gRenderer = nullptr;
 
 bool init();
 void close();
+void colorSquare(int& x, int& y, Uint8& r, Uint8& g, Uint8& b);
 void drawGasket(int x, int y, int size);
 
 // Initialize SDL and create a window and renderer
@@ -49,12 +53,23 @@ void close()
     SDL_Quit();
 }
 
+// Sets the top right corner to red, bottom left green and the bottom left to blue 
+void colorSquare(int& x, int& y, Uint8& r, Uint8& g, Uint8& b)
+{
+    b = colorIntensity * ((x * y) / WH);
+    r = colorIntensity * x - b;
+    g = colorIntensity * y - b;
+}
+
 // Draws a gasket if the input size is small enough. Otherwises halves the size
 void drawGasket(int x, int y, int size)
 {
-    if (size <= 16)
+    if (size <= 1)
     {
         SDL_Rect fillSpace = {x, y, size, size};
+        Uint8 r = 0, g = 0, b = 0;
+        colorSquare(x, y, r, g, b);
+        SDL_SetRenderDrawColor(gRenderer, r, g, b, 255);
         SDL_RenderFillRect(gRenderer, &fillSpace);
     }
     else
@@ -95,7 +110,6 @@ int main(int argc, char* args[])
         SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
         SDL_RenderClear(gRenderer);
 
-        SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
         drawGasket(0, 0, WH);
 
         // Update at the end of every frame
