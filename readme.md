@@ -4,4 +4,4 @@ Creates the sierpinksi triangle fractal using [SDL2](https://www.libsdl.org/).
 
 ### Example
 
-![Example](example.png)
+![Example](example2.png)
