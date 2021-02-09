@@ -1,6 +1,6 @@
-# Sierpinksi-gasket using SDL2
+# Sierpinski-gasket using SDL2
 
-Creates the sierpinksi triangle fractal using [SDL2](https://www.libsdl.org/).
+Creates the Sierpinski triangle fractal using [SDL2](https://www.libsdl.org/).
 
 ### Example
 
